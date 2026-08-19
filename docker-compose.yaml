@@ -19,6 +19,20 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    app:
+        image: prawee/strapi
+        container_name: 69-s1-app
+        ports:
+          - "9091:1337"
+        environment:
+          DATABASE_CLIENT: postgres
+          DATABASE_HOST: 69-s1-db
+          DATABASE_PORT: 5432
+          DATABASE_NAME: KITTIKOON
+          DATABASE_USERNAME: KITTOON
+          DATABASE_PASSWORD: kittikoon@0911646466
 
+volumes:
+  data-pgadmin:
 volumes:
   data-postgres:
