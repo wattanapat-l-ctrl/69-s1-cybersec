@@ -28,9 +28,9 @@ services:
       DATABASE_CLIENT: postgres
       DATABASE_HOST: 69-s1-db
       DATABASE_PORT: 5432
-      DATABASE_NAME: KITTIKOON
-      DATABASE_USERNAME: KITTOON
-      DATABASE_PASSWORD: kittikoon@0911646466
+      DATABASE_NAME: wattanapat
+      DATABASE_USERNAME: wattanapat
+      DATABASE_PASSWORD: wt010605
 
 volumes:
   data-pgadmin:
