@@ -5,9 +5,9 @@
     ports:
       - "54327:5432"
     environment:
-      - POSTGRES_PASSWORD=kittikoon@0911646466
-      - POSTGRES_USER=kittikoon
-      - POSTGRES_DB=kittikoon
+      - POSTGRES_PASSWORD=wt010605
+      - POSTGRES_USER=wattanapat
+      - POSTGRES_DB=wattanapat
     volumes:
       - .data/data:/var/lib/postgresql/data
 
@@ -18,4 +18,4 @@
       - "8080:80"
     environment:
       - PGADMIN_DEFAULT_EMAIL=kittikoon-p@rmutp.ac.th
-      - PGADMIN_DEFAULT_PASSWORD=kittikoon@0911646466
+      - PGADMIN_DEFAULT_PASSWORD=wt010605
