@@ -1,2 +1,2 @@
 data/
-data-postgres/
+data-postgres/.env
