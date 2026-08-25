@@ -1,0 +1,40 @@
+### 1. Register / Signup 
+POST http://localhost:9091/api/auth/local/register
+Content-Type: application/json
+
+{
+  "username": "wattanapat",
+  "email": "wattanapat-Login@rmutp.ac.th",
+  "password": "wt010605"
+}
+
+### 2. Login User 
+POST http://localhost:9091/api/auth/local
+Content-Type: application/json
+
+{
+  "identifier": "wattanapat-Login@rmutp.ac.th",
+  "password": "wt010605"
+}
+
+### 3. Login Admin 
+POST http://localhost:9091/admin/login
+Content-Type: application/json
+
+{
+  "email": "wattanapat-Login@rmutp.ac.th",
+  "password": "wt010605",
+  "rememberMe": false
+}
+
+### 4. Forgot Password 
+POST http://localhost:9091/api/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "wattanapat-Login@rmutp.ac.th"
+}
+
+### 5. Profile
+GET http://localhost:9091/api/users/me
+Authorization: Bearer
