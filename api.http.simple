@@ -1,40 +1,73 @@
-### 1. Register / Signup 
-POST http://localhost:[PORT]/api/auth/local/register
+### ============================================================
+###  Password Reset Flow (Forgot + Single-use Token)
+### ============================================================
+###  Flow:
+###  1  -> Register (ครั้งแรกครั้งเดียว)
+###  2  -> Login ให้ได้ JWT
+###  4  -> Forgot Password สร้าง token (เข้าอีเมลจริง)
+###  4.2-> copy token จากอีเมล / DB ไปวางขั้น 5
+###  5  -> Reset Password ด้วย token = 200 สำเร็จ
+###  5.1-> ยิงขั้น 5 ซ้ำด้วย token เดิม = 400 (single-use)
+###  6  -> ดู Profile ด้วย JWT
+### ============================================================
+
+### 1. Register / Signup (ทำครั้งแรกเท่านั้น)
+POST http://localhost:9091/api/auth/local/register
 Content-Type: application/json
 
 {
-  "username": "",
-  "email": "",
-  "password": ""
+  "username": "your_username",
+  "email": "you@example.com",
+  "password": "YourPassword123!"
 }
 
-### 2. Login User 
-POST http://localhost:[PORT]/api/auth/local
+### 2. Login User
+POST http://localhost:9091/api/auth/local
 Content-Type: application/json
 
 {
-  "identifier": "",
-  "password": ""
+  "identifier": "you@example.com",
+  "password": "YourPassword123!"
 }
 
-### 3. Login Admin 
-POST http://localhost:[PORT]/admin/login
+### 3. Login Admin
+POST http://localhost:9091/admin/login
 Content-Type: application/json
 
 {
-  "email": "",
-  "password": "",
+  "email": "admin@example.com",
+  "password": "AdminPassword123!",
   "rememberMe": false
 }
 
-### 4. Forgot Password 
-POST http://localhost:[PORT]/api/auth/forgot-password
+### 4. Forgot Password (สร้าง token -> ส่งเข้า email จริง)
+POST http://localhost:9091/api/auth/forgot-password
 Content-Type: application/json
 
 {
-  "email": ""
+  "email": "you@example.com"
 }
 
-### 5. Profile
-GET http://localhost:[PORT]/api/users/me
-Authorization: Bearer
+### 4.2 เอา token
+###    - จากอีเมลจริง หรือ
+###    - pgAdmin http://localhost:8081 -> db -> database -> public -> up_users
+###      -> copy คอลัมน์ reset_password_token ของ email นั้น
+###    - paste ลง "code" ในขั้น 5
+
+### 5. Reset Password (ใช้ token ใหม่ล่าสุดเท่านั้น!)
+###    หลังยิงขั้น 4 แล้ว token ใหม่จะแทนที่ตัวเก่า
+POST http://localhost:9091/api/auth/reset-password
+Content-Type: application/json
+
+{
+  "code": "PASTE_NEW_TOKEN_HERE",
+  "password": "YourNewPassword123!",
+  "passwordConfirmation": "YourNewPassword123!"
+}
+
+### 5.1 ทดสอบ single-use: ยิงขั้น 5 ซ้ำด้วย code เดิม
+###    -> ได้ 400 Bad Request (token ใช้แล้ว/หมดอายุ)
+
+### 6. Profile (ใส่ JWT ใหม่จากขั้น 2)
+GET http://localhost:9091/api/users/me
+Authorization: Bearer PASTE_JWT_FROM_LOGIN

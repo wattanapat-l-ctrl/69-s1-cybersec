@@ -2,3 +2,6 @@ data/
 .env
 data-postgres/
 api.http
+
+strapi-extras/node_modules/
+strapi-extras/package-lock.json
