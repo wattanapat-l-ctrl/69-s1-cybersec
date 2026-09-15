@@ -1,24 +1,20 @@
 ### ============================================================
 ###  Password Reset Flow (Forgot + Single-use Token)
 ### ============================================================
-###  Flow:
-###  1  -> Register (ครั้งแรกครั้งเดียว)
-###  2  -> Login ให้ได้ JWT
-###  4  -> Forgot Password สร้าง token (เข้าอีเมลจริง)
-###  4.2-> copy token จากอีเมล / DB ไปวางขั้น 5
-###  5  -> Reset Password ด้วย token = 200 สำเร็จ
-###  5.1-> ยิงขั้น 5 ซ้ำด้วย token เดิม = 400 (single-use)
-###  6  -> ดู Profile ด้วย JWT
+###  มี 2 ฝั่ง: User (/api/auth/*) และ Admin (/admin/*)
+###  - User  reset: code + password + passwordConfirmation
+###  - Admin reset: resetPasswordToken + password (ไม่มี passwordConfirmation!)
+###  Token ใช้ได้ครั้งเดียว ทุกฝั่ง (ยิงซ้ำ = 400)
 ### ============================================================
 
-### 1. Register / Signup (ทำครั้งแรกเท่านั้น)
+### 1. Register User (ทำครั้งแรกครั้งเดียว)
 POST http://localhost:9091/api/auth/local/register
 Content-Type: application/json
 
 {
-  "username": "your_username",
-  "email": "you@example.com",
-  "password": "YourPassword123!"
+  "username": "wattanapat",
+  "email": "kztem03@gmail.com",
+  "password": "NewPassword123!"
 }
 
 ### 2. Login User
@@ -26,8 +22,8 @@ POST http://localhost:9091/api/auth/local
 Content-Type: application/json
 
 {
-  "identifier": "you@example.com",
-  "password": "YourPassword123!"
+  "identifier": "kztem03@gmail.com",
+  "password": "NewPassword123!"
 }
 
 ### 3. Login Admin
@@ -35,17 +31,20 @@ POST http://localhost:9091/admin/login
 Content-Type: application/json
 
 {
-  "email": "admin@example.com",
-  "password": "AdminPassword123!",
+  "email": "kztem03@gmail.com",
+  "password": "AdminNewPass123!",
   "rememberMe": false
 }
 
-### 4. Forgot Password (สร้าง token -> ส่งเข้า email จริง)
+### ========== USER flow ==========
+
+### 4. Forgot Password User (สร้าง token -> ส่งเข้า email จริง)
+###    Strapi หา user จาก email ในตาราง up_users
 POST http://localhost:9091/api/auth/forgot-password
 Content-Type: application/json
 
 {
-  "email": "you@example.com"
+  "email": "kztem03@gmail.com"
 }
 
 ### 4.2 เอา token
@@ -54,20 +53,46 @@ Content-Type: application/json
 ###      -> copy คอลัมน์ reset_password_token ของ email นั้น
 ###    - paste ลง "code" ในขั้น 5
 
-### 5. Reset Password (ใช้ token ใหม่ล่าสุดเท่านั้น!)
-###    หลังยิงขั้น 4 แล้ว token ใหม่จะแทนที่ตัวเก่า
+### 5. Reset Password User (ใช้ token ใหม่ล่าสุดเท่านั้น!)
 POST http://localhost:9091/api/auth/reset-password
 Content-Type: application/json
 
 {
-  "code": "PASTE_NEW_TOKEN_HERE",
-  "password": "YourNewPassword123!",
-  "passwordConfirmation": "YourNewPassword123!"
+  "code": "PASTE_TOKEN_FROM_EMAIL",
+  "password": "NewPassword123!",
+  "passwordConfirmation": "NewPassword123!"
 }
 
-### 5.1 ทดสอบ single-use: ยิงขั้น 5 ซ้ำด้วย code เดิม
-###    -> ได้ 400 Bad Request (token ใช้แล้ว/หมดอายุ)
+### 5.1 ทดสอบ single-use: ยิงขั้น 5 ซ้ำด้วย code เดิม -> ได้ 400
 
-### 6. Profile (ใส่ JWT ใหม่จากขั้น 2)
+### ========== ADMIN flow ==========
+
+### 6. Forgot Password Admin (สร้าง token -> ส่งเข้า email จริง)
+###    Strapi หา admin จาก email ในตาราง admin_users
+POST http://localhost:9091/admin/forgot-password
+Content-Type: application/json
+
+{
+  "email": "kztem03@gmail.com"
+}
+
+### 6.2 เอา token: จากอีเมลจริง หรือ pgAdmin -> admin_users
+###    -> copy คอลัมน์ reset_password_token -> paste ขั้น 7
+
+### 7. Reset Password Admin (ใช้ token ใหม่ล่าสุดเท่านั้น!)
+###    รับแค่ resetPasswordToken + password (ไม่รับ passwordConfirmation!)
+POST http://localhost:9091/admin/reset-password
+Content-Type: application/json
+
+{
+  "resetPasswordToken": "PASTE_TOKEN_FROM_ADMIN_EMAIL",
+  "password": "AdminNewPass123!"
+}
+
+### 7.1 ทดสอบ single-use: ยิงขั้น 7 ซ้ำด้วย token เดิม -> ได้ 400
+
+### ========== Profile ==========
+
+### 8. Profile (ใส่ JWT ใหม่จากขั้น 2)
 GET http://localhost:9091/api/users/me
 Authorization: Bearer PASTE_JWT_FROM_LOGIN
