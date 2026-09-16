@@ -1,12 +1,3 @@
-### ============================================================
-###  Password Reset Flow (Forgot + Single-use Token)
-### ============================================================
-###  มี 2 ฝั่ง: User (/api/auth/*) และ Admin (/admin/*)
-###  - User  reset: code + password + passwordConfirmation
-###  - Admin reset: resetPasswordToken + password (ไม่มี passwordConfirmation!)
-###  Token ใช้ได้ครั้งเดียว ทุกฝั่ง (ยิงซ้ำ = 400)
-### ============================================================
-
 ### 1. Register User (ทำครั้งแรกครั้งเดียว)
 POST http://localhost:9091/api/auth/local/register
 Content-Type: application/json
