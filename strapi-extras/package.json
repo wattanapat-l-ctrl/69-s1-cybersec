@@ -1,0 +1,8 @@
+{
+  "name": "strapi-extras",
+  "private": true,
+  "dependencies": {
+    "@strapi/provider-email-nodemailer": "4.16.2",
+    "nodemailer": "6.9.14"
+  }
+}
