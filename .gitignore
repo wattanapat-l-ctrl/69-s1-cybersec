@@ -5,3 +5,4 @@ api.http
 
 strapi-extras/node_modules/
 strapi-extras/package-lock.json
+config/
