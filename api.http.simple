@@ -84,3 +84,113 @@ Content-Type: application/json
 ### 2.4 Profile
 GET http://localhost:9091/api/users/me
 Authorization: Bearer <JWT>
+
+## 3. Content
+### 3.1 Student
+### 3.1.1 Create Student
+POST http://localhost:9091/api/students
+Content-Type: application/json
+Authorization: Bearer <JWT>
+
+{
+  "data": {
+    "name": "",
+    "mobile": "",
+    "cardId": ""
+  }
+}
+
+### 3.1.2 Get Student
+GET http://localhost:9091/api/students
+Authorization: Bearer <JWT>
+
+### 3.1.3 Update Student
+PUT http://localhost:9091/api/students/3
+Content-Type: application/json
+Authorization: Bearer <JWT>
+
+{
+  "data": {
+    "name": "",
+    "mobile": "",
+    "cardId": ""
+  }
+}
+
+### 3.1.4 Delete Student
+DELETE http://localhost:9091/api/students/3
+Authorization: Bearer <JWT>
+
+### 3.1.5 Get Student by id
+GET http://localhost:9091/api/students/3
+Authorization: Bearer <JWT>
+
+### 3.2 Teacher
+### 3.2.1 Create Teacher
+POST http://localhost:9091/api/teachers
+Content-Type: application/json
+Authorization: Bearer <JWT>
+
+{
+  "data": {
+    "name": ""
+  }
+}
+
+### 3.2.2 Get Teacher
+GET http://localhost:9091/api/teachers
+Authorization: Bearer <JWT>
+
+### 3.2.3 Update Teacher
+PUT http://localhost:9091/api/teachers/1
+Content-Type: application/json
+Authorization: Bearer <JWT>
+
+{
+  "data": {
+    "name": ""
+  }
+}
+
+### 3.2.4 Delete Teacher
+DELETE http://localhost:9091/api/teachers/1
+Authorization: Bearer <JWT>
+
+### 3.2.5 Get Teacher by id
+GET http://localhost:9091/api/teachers/1
+Authorization: Bearer <JWT>
+
+### 3.3 Subject
+### 3.3.1 Create Subject
+POST http://localhost:9091/api/subjects
+Content-Type: application/json
+Authorization: Bearer <JWT>
+
+{
+  "data": {
+    "name": ""
+  }
+}
+
+### 3.3.2 Get Subject
+GET http://localhost:9091/api/subjects
+Authorization: Bearer <JWT>
+
+### 3.3.3 Update Subject
+PUT http://localhost:9091/api/subjects/1
+Content-Type: application/json
+Authorization: Bearer <JWT>
+
+{
+  "data": {
+    "name": ""
+  }
+}
+
+### 3.3.4 Delete Subject
+DELETE http://localhost:9091/api/subjects/1
+Authorization: Bearer <JWT>
+
+### 3.3.5 Get Subject by id
+GET http://localhost:9091/api/subjects/1
+Authorization: Bearer <JWT>
